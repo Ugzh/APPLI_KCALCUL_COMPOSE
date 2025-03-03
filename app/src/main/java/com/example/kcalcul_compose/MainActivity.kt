@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kcalcul_compose.ui.screens.Register
+import com.example.kcalcul_compose.ui.shared_component.EditTextSharedComponent
 import com.example.kcalcul_compose.ui.theme.KCALCUL_COMPOSETheme
 
 class MainActivity : ComponentActivity() {
@@ -22,25 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Register()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    KCALCUL_COMPOSETheme {
-        Greeting("Android")
     }
 }

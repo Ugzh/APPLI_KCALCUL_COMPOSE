@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.kcalcul_compose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.kcalcul_compose"
         minSdk = 25
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -66,4 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-android:2.5.1")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
 }
