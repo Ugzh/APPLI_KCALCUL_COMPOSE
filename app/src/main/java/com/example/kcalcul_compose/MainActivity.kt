@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.kcalcul_compose.ui.screens.edit.EditAccount
+import com.example.kcalcul_compose.ui.screens.edit.EditAccountPreview
 import com.example.kcalcul_compose.ui.screens.register.Register
 import com.example.kcalcul_compose.ui.theme.KCALCUL_COMPOSETheme
 
@@ -20,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Register()
+                    //Register()
+                    //EditAccountPreview()
                 }
             }
         }
