@@ -51,7 +51,7 @@ fun RegisterPreview(){
 fun Register(){
     Box(Modifier.fillMaxSize()) {
         TitleSharedComponent(text = "Sign-up", modifier = Modifier.align(Alignment.TopCenter))
-        Column(Modifier.align(Alignment.Center)) {
+        Column(Modifier.align(Alignment.Center).padding(horizontal = 60.dp)) {
             EditTextSharedComponent(placeholderStr = "Firstname")
             EditTextSharedComponent(placeholderStr = "Lastname")
             EditTextSharedComponent(placeholderStr = "Email")
@@ -61,14 +61,13 @@ fun Register(){
                 placeholderStr = "Daily requirements",
                 keyboardType = KeyboardType.Number
             )
-            Box(
-                Modifier
-                    .padding(top = 60.dp)
-                    .align(Alignment.CenterHorizontally)){
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    ButtonSharedComponent(btnText = "Create", modifier = Modifier)
-                    Text(text = "I have an account", Modifier.padding(top= 10.dp))
-                }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 60.dp)) {
+                ButtonSharedComponent(btnText = "Create", modifier = Modifier)
+                Text(text = "I have an account", Modifier.padding(top= 10.dp))
             }
         }
 

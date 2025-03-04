@@ -24,7 +24,10 @@ import com.example.kcalcul_compose.ui.theme.BorderColor
 @Preview(showBackground = true)
 @Composable
 fun IngredientSharedComponentPreview(){
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         TextViewIngredient(name = "Ingredient")
         TextViewIngredient(name = "Kcal/100g")
         TextViewIngredient(name = "Qty")
@@ -38,16 +41,20 @@ fun IngredientSharedComponentPreview(){
 
 @Composable
 fun IngredientSharedComponent(ingredient: String, kcal: Int, qty: Int, unit: String){
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-    TextViewIngredient(name = ingredient)
-    TextViewIngredient(name = kcal.toString())
-    TextViewIngredient(name = qty.toString())
-    TextViewIngredient(name = unit)
-    Image(
-        painter = painterResource(id = R.drawable.trash),
-        contentDescription = "trash",
-        Modifier.width(25.dp).height(25.dp))
-}
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        TextViewIngredient(name = ingredient)
+        TextViewIngredient(name = kcal.toString())
+        TextViewIngredient(name = qty.toString())
+        TextViewIngredient(name = unit)
+        Image(
+            painter = painterResource(id = R.drawable.trash),
+            contentDescription = "trash",
+            Modifier.width(25.dp).height(25.dp)
+        )
+    }
 }
 
 @Composable

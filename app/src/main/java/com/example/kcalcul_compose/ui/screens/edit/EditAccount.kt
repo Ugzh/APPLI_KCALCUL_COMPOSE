@@ -45,27 +45,19 @@ fun EditAccountPreview(){
 @Composable
 fun EditAccount(){
     Box(Modifier.fillMaxSize()) {
-        TitleSharedComponent(text = "Sign-up", modifier = Modifier.align(Alignment.TopCenter))
-        Column(Modifier.align(Alignment.Center)) {
+        TitleSharedComponent(text = "Edit Account", modifier = Modifier.align(Alignment.TopCenter))
+        Column(Modifier.align(Alignment.Center).padding(horizontal = 60.dp)) {
             EditTextSharedComponent(placeholderStr = "Firstname")
             EditTextSharedComponent(placeholderStr = "Lastname")
             EditTextSharedComponent(placeholderStr = "Email")
-            EditTextSharedComponent(placeholderStr = "Password", isPasswordField = true)
-            EditTextSharedComponent(placeholderStr = "Confirm password", isPasswordField = true)
             EditTextSharedComponent(
                 placeholderStr = "Daily requirements",
                 keyboardType = KeyboardType.Number
             )
-            Box(
-                Modifier
-                    .padding(top = 60.dp)
-                    .align(Alignment.CenterHorizontally)){
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    ButtonSharedComponent(btnText = "Create", modifier = Modifier)
-                    Text(text = "I have an account", Modifier.padding(top= 10.dp))
-                }
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(top = 40.dp).fillMaxWidth()) {
+                ButtonSharedComponent(btnText = "Back", modifier = Modifier)
+                ButtonSharedComponent(btnText = "Validate", modifier = Modifier)
             }
         }
-
     }
 }
