@@ -1,4 +1,4 @@
-package com.example.kcalcul.network
+package com.example.kcalcul_compose.network
 
 object ApiRoutes {
     const val BASE_URL = "http://10.0.2.2:3000"

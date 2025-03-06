@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -67,10 +71,32 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("io.coil-kt:coil-compose:2.2.2")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
+    //Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
+
+    //Retrofit
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    //Hilt
+    val hiltVersion = "2.55"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    //Coroutine?
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    //Nav
+    val nav_version = "2.8.8"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    //Icons
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+
 }

@@ -1,14 +1,15 @@
-package com.example.kcalcul.network
+package com.example.kcalcul_compose.network
 
-import com.example.kcalcul.network.dtos.foodsBeverages.CreateRecipeDto
-import com.example.kcalcul.network.dtos.foodsBeverages.CreateRecipeResponseDto
-import com.example.kcalcul.network.dtos.users.LogUserResponseDto
-import com.example.kcalcul.network.dtos.users.CreateUserDto
-import com.example.kcalcul.network.dtos.users.CreateUserResponseDto
-import com.example.kcalcul.network.dtos.users.LogUserDto
-import com.example.kcalcul.network.dtos.users.UpdateUserDto
-import com.example.kcalcul.network.dtos.users.UpdateUserResponseDto
-import com.example.kcalcul.network.dtos.users.UserDto
+import com.example.kcalcul_compose.network.ApiRoutes
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.CreateRecipeDto
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.CreateRecipeResponseDto
+import com.example.kcalcul_compose.network.dtos.users.LogUserResponseDto
+import com.example.kcalcul_compose.network.dtos.users.CreateUserDto
+import com.example.kcalcul_compose.network.dtos.users.CreateUserResponseDto
+import com.example.kcalcul_compose.network.dtos.users.LogUserDto
+import com.example.kcalcul_compose.network.dtos.users.UpdateUserDto
+import com.example.kcalcul_compose.network.dtos.users.UpdateUserResponseDto
+import com.example.kcalcul_compose.network.dtos.users.UserDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

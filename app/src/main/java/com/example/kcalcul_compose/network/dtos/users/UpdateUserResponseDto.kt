@@ -1,4 +1,4 @@
-package com.example.kcalcul.network.dtos.users
+package com.example.kcalcul_compose.network.dtos.users
 
 import com.squareup.moshi.Json
 

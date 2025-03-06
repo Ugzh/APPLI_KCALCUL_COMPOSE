@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.kcalcul_compose.ui.screens.edit.EditAccount
-import com.example.kcalcul_compose.ui.screens.edit.EditAccountPreview
-import com.example.kcalcul_compose.ui.screens.register.Register
+import androidx.navigation.compose.rememberNavController
+import com.example.kcalcul_compose.ui.navigation.AppNavHost
+import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
+import com.example.kcalcul_compose.ui.shared_component.IngredientEditsTextsContent
 import com.example.kcalcul_compose.ui.theme.KCALCUL_COMPOSETheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +25,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Register()
+                    val navController = rememberNavController()
+
+                    //RegisterScreen()
                     //EditAccountPreview()
+                    //AppNavHost()
+                    IngredientEditsTextsContent()
                 }
             }
         }

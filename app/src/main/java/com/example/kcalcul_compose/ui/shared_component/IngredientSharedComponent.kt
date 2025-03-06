@@ -9,12 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +41,9 @@ fun IngredientSharedComponentPreview(){
         Image(
             painter = painterResource(id = R.drawable.trash),
             contentDescription = "trash",
-            Modifier.width(25.dp).height(25.dp))
+            Modifier
+                .width(25.dp)
+                .height(25.dp))
     }
 }
 
@@ -52,7 +60,9 @@ fun IngredientSharedComponent(ingredient: String, kcal: Int, qty: Int, unit: Str
         Image(
             painter = painterResource(id = R.drawable.trash),
             contentDescription = "trash",
-            Modifier.width(25.dp).height(25.dp)
+            Modifier
+                .width(25.dp)
+                .height(25.dp)
         )
     }
 }
@@ -68,11 +78,64 @@ fun TextViewIngredient(name: String, modifier : Modifier = Modifier){
                 shape = RoundedCornerShape(4.dp)
             )
             .padding(
-                top =10.dp,
+                top = 10.dp,
                 bottom = 10.dp,
                 start = 20.dp,
-                end = 20.dp),
+                end = 20.dp
+            ),
         maxLines = 1
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun IngredientEditsTextsPreview(){
+    IngredientEditsTextsContent()
+}
+
+@Composable
+fun IngredientEditsTextsContent(){
+    val context = LocalContext.current
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.ingredient),
+            modifier = Modifier
+                .weight(0.3f)
+                //.padding(end = 4.dp),
+
+
+        )
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.kcal_100g),
+            modifier = Modifier
+                .weight(0.3f)
+                .padding(end = 4.dp)
+        )
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.quantity_shortcut),
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(end = 4.dp)
+
+        )
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.unit),
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(end = 4.dp)
+        )
+        Icon(
+            imageVector = Icons.Outlined.Delete,
+            contentDescription = context.getString(R.string.delete),
+            modifier = Modifier.weight(0.1f)
+        )
+        /*OutlinedTextField(value = "ingredient6", onValueChange ={}, Modifier.weight(0.2f))
+        OutlinedTextField(value = "ingredient2", onValueChange ={},  Modifier.weight(0.2f) )
+        OutlinedTextField(value = "ingredient3", onValueChange ={},  Modifier.weight(0.2f) )
+        OutlinedTextField(value = "ingredient3", onValueChange ={},  Modifier.weight(0.2f) )*/
+    }
 
 }

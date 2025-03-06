@@ -25,7 +25,7 @@ fun TitleSharedComponentPreview(
 @Composable
 fun TitleSharedComponent(
     modifier: Modifier = Modifier,
-    text: String = "Ugo",
+    text: String,
 ){
     Text(
         text = text,

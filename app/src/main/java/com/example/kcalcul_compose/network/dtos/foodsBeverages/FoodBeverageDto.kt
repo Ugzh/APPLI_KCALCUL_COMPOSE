@@ -1,4 +1,4 @@
-package com.example.kcalcul.network.dtos.foodsBeverages
+package com.example.kcalcul_compose.network.dtos.foodsBeverages
 
 
 import com.squareup.moshi.Json
@@ -9,5 +9,5 @@ data class FoodBeverageDto(
     @Json(name = "kcal")
     val kcal: Int,
     @Json(name = "state")
-    val state: String
+    val state: String = "publish"
 )

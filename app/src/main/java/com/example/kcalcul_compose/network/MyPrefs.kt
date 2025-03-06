@@ -1,9 +1,9 @@
-package com.example.kcalcul.network
+package com.example.kcalcul_compose.network
 
 import android.content.SharedPreferences
-import com.example.kcalcul.utils.FIRSTNAME
-import com.example.kcalcul.utils.TOKEN
-import com.example.kcalcul.utils.USER_ID
+import com.example.kcalcul_compose.utils.FIRSTNAME
+import com.example.kcalcul_compose.utils.TOKEN
+import com.example.kcalcul_compose.utils.USER_ID
 import javax.inject.Inject
 
 class MyPrefs @Inject constructor(private val sharedPreferences: SharedPreferences){
