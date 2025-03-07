@@ -14,6 +14,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import com.example.kcalcul_compose.R
 import com.example.kcalcul_compose.ui.navigation.Screen
 import com.example.kcalcul_compose.ui.shared_component.ButtonSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.EditTextSharedComponent
+import com.example.kcalcul_compose.ui.shared_component.Lucas
 import com.example.kcalcul_compose.ui.shared_component.TitleSharedComponent
 
 @Preview(showBackground = true)
@@ -45,12 +47,14 @@ fun SignInPreview(){
 
 fun SignInContent(logUser: (String, String) -> Unit, noAccountNavigation: () -> Unit, isLoading: Boolean){
     val context = LocalContext.current
+
     var email by remember {
         mutableStateOf("")
     }
     var password by remember {
         mutableStateOf("")
     }
+
     Box(Modifier.fillMaxSize()) {
         TitleSharedComponent(
             text = context.getString(R.string.sign_in),
@@ -80,7 +84,6 @@ fun SignInContent(logUser: (String, String) -> Unit, noAccountNavigation: () -> 
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 3.dp)
-
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,7 +99,7 @@ fun SignInContent(logUser: (String, String) -> Unit, noAccountNavigation: () -> 
                 Text(
                     text = context.getString(R.string.no_account),
                     modifier = Modifier
-                        .padding(top= 10.dp)
+                        .padding(top = 10.dp)
                         .clickable { noAccountNavigation() }
                 )
                 if(isLoading)
@@ -109,13 +112,13 @@ fun SignInContent(logUser: (String, String) -> Unit, noAccountNavigation: () -> 
 @Composable
 fun SignInScreen(navController: NavController, vm: LoginViewModel) {
     val context = LocalContext.current
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
+
+    val isLoading by vm.progressBarLoadingStateFlow.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        vm.progressBarLoadingSharedFlow.collect{
-            isLoading = it
+        vm.userLoggedSharedFlow.collect{
+            if(it)
+                navController.navigate(Screen.Edit.route)
         }
     }
 

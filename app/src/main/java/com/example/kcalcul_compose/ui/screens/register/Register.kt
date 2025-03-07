@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -151,15 +152,7 @@ fun RegisterContent(
 @Composable
 fun RegisterScreen(navController: NavController, vm: RegisterViewModel){
     val context = LocalContext.current
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
-
-    LaunchedEffect(key1 = true) {
-        vm.progressBarLoadingSharedFlow.collect{
-            isLoading = it
-        }
-    }
+    val isLoading by vm.progressBarLoadingStateFlow.collectAsState()
 
     LaunchedEffect(key1 = true) {
         vm.userMessageSharedFlow.collect{

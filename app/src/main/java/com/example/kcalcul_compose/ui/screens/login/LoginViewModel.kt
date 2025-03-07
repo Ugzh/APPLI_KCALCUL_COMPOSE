@@ -1,5 +1,6 @@
 package com.example.kcalcul_compose.ui.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kcalcul_compose.network.ApiService
@@ -10,7 +11,9 @@ import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.ConnectException
@@ -28,21 +31,21 @@ class LoginViewModel @Inject constructor(
     private var _userLoggedSharedFlow = MutableSharedFlow<Boolean>()
     val userLoggedSharedFlow = _userLoggedSharedFlow.asSharedFlow()
 
-    private var _progressBarLoadingSharedFlow = MutableSharedFlow<Boolean>()
-    val progressBarLoadingSharedFlow = _progressBarLoadingSharedFlow.asSharedFlow()
+    private var _progressBarLoadingStateFlow = MutableStateFlow(false)
+    val progressBarLoadingStateFlow = _progressBarLoadingStateFlow.asStateFlow()
+
 
     fun logUser(email: String, password: String) {
         val trimEmail = email.trim()
         val trimPassword = password.trim()
         if(trimEmail.isNotEmpty() && trimPassword.isNotEmpty()){
             viewModelScope.launch {
-                _progressBarLoadingSharedFlow.emit(true)
+                _progressBarLoadingStateFlow.value = true
                 try {
                     val response = withContext(Dispatchers.IO){
                         apiService.logUser(LogUserDto(trimEmail, trimPassword))
                     }
-                    _progressBarLoadingSharedFlow.emit(false)
-
+                    _progressBarLoadingStateFlow.value = false
 
                     val body = response?.body()
 
@@ -63,7 +66,7 @@ class LoginViewModel @Inject constructor(
                         _userMessageSharedFlow.emit(it)
                     }
                 } catch (ce : ConnectException){
-                    _progressBarLoadingSharedFlow.emit(false)
+                    _progressBarLoadingStateFlow.value = false
                     _userMessageSharedFlow.emit(R.string.no_response_database)
                 }
             }
@@ -73,3 +76,4 @@ class LoginViewModel @Inject constructor(
             }
     }
 }
+

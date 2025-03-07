@@ -1,8 +1,10 @@
 package com.example.kcalcul_compose.ui.shared_component
 
 import android.util.Log
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,25 +47,17 @@ fun EditTextSharedComponentPreview(
 @Composable
 fun EditTextSharedComponent(
     modifier: Modifier= Modifier,
-    textToEdit: String = "",
     placeholderStr: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPasswordField: Boolean = false,
     textSize: TextUnit = 14.sp,
+    textToEdit: String = "",
     onChangeText: (String) -> Unit,
 ){
-    var updatedText by remember {
-        mutableStateOf(textToEdit)
-    }
-
     OutlinedTextField(
         modifier = modifier,
-        value = updatedText,
-        onValueChange =
-        {
-            updatedText = it
-            onChangeText(it)
-        },
+        value = textToEdit,
+        onValueChange = onChangeText,
         label = {
             Text(text = placeholderStr, fontSize = textSize)
         },
@@ -75,5 +69,35 @@ fun EditTextSharedComponent(
         visualTransformation =
         if (isPasswordField) PasswordVisualTransformation() else VisualTransformation.None
     )
+}
+
+@Composable
+fun Lucas(
+    value: String,
+    labelText: String,
+    onValueChange: (String) -> Unit,
+){
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Text(text = labelText)
+        },
+
+    )
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Test(){
+    var state by remember {
+        mutableStateOf("")
+    }
+    Column {
+        Lucas(labelText = "Lucas", value = state, onValueChange = {state = it})
+        Button(onClick = {Log.d("test", "$state test")}) {
+        }
+    }
 
 }

@@ -29,5 +29,5 @@ fun ButtonSharedComponent(
     btnText: String = "Ugo",
     onClickAction : () -> Unit
 ){
-  Button(onClick = { onClickAction() }, content = { Text(text = btnText)}, modifier = modifier)
+  Button(onClick = onClickAction, content = { Text(text = btnText)}, modifier = modifier)
 }

@@ -8,7 +8,9 @@ import com.example.kcalcul_compose.network.dtos.users.CreateUserDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.ConnectException
@@ -25,8 +27,8 @@ class RegisterViewModel @Inject constructor(
     private var _userCreatedSharedFlow = MutableSharedFlow<Boolean>()
     val userCreatedSharedFlow = _userCreatedSharedFlow.asSharedFlow()
 
-    private var _progressBarLoadingSharedFlow = MutableSharedFlow<Boolean>()
-    val progressBarLoadingSharedFlow = _progressBarLoadingSharedFlow.asSharedFlow()
+    private var _progressBarLoadingStateFlow = MutableStateFlow(false)
+    val progressBarLoadingStateFlow = _progressBarLoadingStateFlow.asStateFlow()
 
     fun createUser(firstname : String,
                    lastname: String,
@@ -52,7 +54,7 @@ class RegisterViewModel @Inject constructor(
         {
             if(trimPassword == confirmPassword){
                 viewModelScope.launch {
-                    _progressBarLoadingSharedFlow.emit(true)
+                    _progressBarLoadingStateFlow.value = true
                     try {
                         val responseRegister = withContext(Dispatchers.IO){
                             apiService.createUser(
@@ -64,7 +66,7 @@ class RegisterViewModel @Inject constructor(
                                 trimDailyRequirements.toInt())
                             )
                         }
-                        _progressBarLoadingSharedFlow.emit(false)
+                        _progressBarLoadingStateFlow.value = false
 
                         val body = responseRegister?.body()
 
@@ -85,7 +87,7 @@ class RegisterViewModel @Inject constructor(
                             _userMessageSharedFlow.emit(it)
                         }
                     } catch (ce: ConnectException){
-                        _progressBarLoadingSharedFlow.emit(false)
+                        _progressBarLoadingStateFlow.value = false
                         viewModelScope.launch {
                             _userMessageSharedFlow.emit(R.string.no_response_database)
                         }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kcalcul_compose.ui.screens.splash.SplashScreen
 import com.example.kcalcul_compose.ui.screens.edit.EditAccountScreen
+import com.example.kcalcul_compose.ui.screens.edit.EditAccountViewModel
 import com.example.kcalcul_compose.ui.screens.login.LoginViewModel
 import com.example.kcalcul_compose.ui.screens.login.SignInScreen
 import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
@@ -30,7 +31,7 @@ fun AppNavHost() {
     val navController =  rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.Register.route
+        startDestination = Screen.Login.route
     ) {
         composable(Screen.Splash.route) {
             val splashViewModel: SplashViewModel = hiltViewModel()
@@ -45,10 +46,10 @@ fun AppNavHost() {
             RegisterScreen(navController, registerViewModel)
         }
         composable(Screen.Edit.route) {
-            EditAccountScreen()
+            val editAccountViewModel: EditAccountViewModel = hiltViewModel()
+            EditAccountScreen(navController, editAccountViewModel)
         }
         composable(Screen.CreateMeal.route) {
-            EditAccountScreen()
         }
     }
 }

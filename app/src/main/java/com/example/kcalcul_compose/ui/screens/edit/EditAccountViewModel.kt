@@ -1,5 +1,6 @@
 package com.example.kcalcul_compose.ui.screens.edit
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kcalcul_compose.network.ApiService
@@ -25,13 +26,13 @@ class EditAccountViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _userMessageSharedFlow = MutableSharedFlow<Int>()
-    val userMessageLiveData = _userMessageSharedFlow.asSharedFlow()
+    val userMessageSharedFlow = _userMessageSharedFlow.asSharedFlow()
 
     private var _updatedUserSharedFlow = MutableSharedFlow<Boolean>()
     val updatedUserSharedFlow = _updatedUserSharedFlow.asSharedFlow()
 
-    private var _progressBarLoadingSharedFlow = MutableSharedFlow<Boolean>()
-    val progressBarLoadingSharedFlow = _progressBarLoadingSharedFlow.asSharedFlow()
+    private var _progressBarLoadingStateFlow = MutableStateFlow(false)
+    val progressBarLoadingStateFlow = _progressBarLoadingStateFlow.asStateFlow()
 
     private var _userStateFlow: MutableStateFlow<User?> = MutableStateFlow(null)
     val userStateFlow = _userStateFlow.asStateFlow()
@@ -42,7 +43,7 @@ class EditAccountViewModel @Inject constructor(
 
     private fun getUser(){
         viewModelScope.launch {
-            _progressBarLoadingSharedFlow.emit(true)
+            _progressBarLoadingStateFlow.value = true
             try {
                 val responseEdit = withContext(Dispatchers.IO){
                     apiService.getUser(
@@ -50,7 +51,7 @@ class EditAccountViewModel @Inject constructor(
                         myPrefs.userId
                     )
                 }
-                _progressBarLoadingSharedFlow.emit(false)
+                _progressBarLoadingStateFlow.value = false
 
                 val body = responseEdit?.body()
 
@@ -60,7 +61,8 @@ class EditAccountViewModel @Inject constructor(
 
                     responseEdit.isSuccessful && body != null -> {
                         with(body){
-                            _userStateFlow.emit(User(firstname, lastname, email, profileUrlPage))
+                            _userStateFlow.value =
+                                User(firstname, lastname, email, profileUrlPage, dailyRequirements)
                         }
                     }
 
@@ -68,66 +70,68 @@ class EditAccountViewModel @Inject constructor(
                     else -> return@launch
                 }
             } catch (ce: ConnectException){
-                _progressBarLoadingSharedFlow.emit(false)
+                _progressBarLoadingStateFlow.value = false
                 _userMessageSharedFlow.emit(R.string.no_response_database)
             }
         }
     }
 
 
-    fun updateUser() {
-        _userStateFlow.value?.let {
-            val trimDailyRequirements = it.dailyRequirements.toString()
-            val trimFirstname = it.firstname.trim()
-            val trimLastname = it.lastname.trim()
-            val trimEmail = it.email.trim()
+    fun updateUser(firstname: String, lastname: String, email: String, dailyRequirements: Int) {
+        val trimDailyRequirements = dailyRequirements.toString()
+        val trimFirstname = firstname.trim()
+        val trimLastname = lastname.trim()
+        val trimEmail = email.trim()
 
-            if(trimFirstname.isNotEmpty()
-                && trimLastname.isNotEmpty()
-                && trimEmail.isNotEmpty()
-                && trimDailyRequirements.isNotEmpty()
-            )
-            {
-                viewModelScope.launch {
-                    _progressBarLoadingSharedFlow.emit(true)
-                    try {
-                        val responseEdit = withContext(Dispatchers.IO){
-                            apiService.updateUser(
-                                myPrefs.userId,
-                                UpdateUserDto(trimFirstname, trimLastname, trimEmail, trimDailyRequirements.toInt()),
-                                myPrefs.token!!
-                            )
-                        }
-                        _progressBarLoadingSharedFlow.emit(false)
-
-                        val body = responseEdit?.body()
-
-                        when{
-                            responseEdit == null ->
-                                R.string.no_response_database
-
-                            responseEdit.isSuccessful && body != null -> {
-                                _updatedUserSharedFlow.emit(true)
-                                R.string.user_updated
-                            }
-
-                            responseEdit.code() == 400 ->
-                                R.string.user_not_updated
-
-                            else -> return@launch
-                        }.let {
-                            _userMessageSharedFlow.emit(it)
-                        }
-                    } catch (ce: ConnectException){
-                        _progressBarLoadingSharedFlow.emit(false)
-                        _userMessageSharedFlow.emit(R.string.no_response_database)
+        if(trimFirstname.isNotEmpty()
+            && trimLastname.isNotEmpty()
+            && trimEmail.isNotEmpty()
+            && trimDailyRequirements.isNotEmpty()
+        ){
+            viewModelScope.launch {
+                _progressBarLoadingStateFlow.value = true
+                try {
+                    val responseEdit = withContext(Dispatchers.IO){
+                        apiService.updateUser(
+                            myPrefs.userId,
+                            UpdateUserDto(
+                                trimFirstname,
+                                trimLastname,
+                                trimEmail,
+                                trimDailyRequirements.toInt()
+                            ),
+                            myPrefs.token!!
+                        )
                     }
+                    _progressBarLoadingStateFlow.value = false
+
+                    val body = responseEdit?.body()
+
+                    when{
+                        responseEdit == null ->
+                            R.string.no_response_database
+
+                        responseEdit.isSuccessful && body != null -> {
+                            _updatedUserSharedFlow.emit(true)
+                            R.string.user_updated
+                        }
+
+                        responseEdit.code() == 400 ->
+                            R.string.user_not_updated
+
+                        else -> return@launch
+                    }.let {
+                        _userMessageSharedFlow.emit(it)
+                    }
+                } catch (ce: ConnectException){
+                    _progressBarLoadingStateFlow.value = false
+                    _userMessageSharedFlow.emit(R.string.no_response_database)
                 }
-            } else
-                viewModelScope.launch {
-                    _userMessageSharedFlow.emit(R.string.fill_all_fields_and_requirements)
-                }
-        }
+            }
+        } else
+            viewModelScope.launch {
+                _userMessageSharedFlow.emit(R.string.fill_all_fields_and_requirements)
+            }
     }
 }
 
