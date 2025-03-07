@@ -1,17 +1,103 @@
 package com.example.kcalcul_compose.ui.screens.register
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.kcalcul_compose.R
+import com.example.kcalcul_compose.network.ApiService
+import com.example.kcalcul_compose.network.dtos.users.CreateUserDto
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.ConnectException
+import javax.inject.Inject
 
-class RegisterViewModel: ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val apiService: ApiService,
+): ViewModel() {
 
     private var _userMessageSharedFlow = MutableSharedFlow<Int>()
-    val userMessageLiveData = _userMessageSharedFlow.asSharedFlow()
+    val userMessageSharedFlow = _userMessageSharedFlow.asSharedFlow()
 
     private var _userCreatedSharedFlow = MutableSharedFlow<Boolean>()
     val userCreatedSharedFlow = _userCreatedSharedFlow.asSharedFlow()
 
     private var _progressBarLoadingSharedFlow = MutableSharedFlow<Boolean>()
     val progressBarLoadingSharedFlow = _progressBarLoadingSharedFlow.asSharedFlow()
+
+    fun createUser(firstname : String,
+                   lastname: String,
+                   email: String,
+                   password : String,
+                   confirmPassword: String,
+                   dailyRequirements : String
+    ) {
+        val trimFirstname = firstname.trim().lowercase()
+        val trimLastname = lastname.trim().lowercase()
+        val trimEmail = email.trim().lowercase()
+        val trimPassword = password.trim().lowercase()
+        val trimConfirmPassword = confirmPassword.trim().lowercase()
+        val trimDailyRequirements = dailyRequirements.trim().lowercase()
+
+        if (
+            trimFirstname.isNotEmpty()
+            && trimLastname.isNotEmpty()
+            && trimEmail.isNotEmpty()
+            && trimPassword.isNotEmpty()
+            && trimConfirmPassword.isNotEmpty()
+        )
+        {
+            if(trimPassword == confirmPassword){
+                viewModelScope.launch {
+                    _progressBarLoadingSharedFlow.emit(true)
+                    try {
+                        val responseRegister = withContext(Dispatchers.IO){
+                            apiService.createUser(
+                                CreateUserDto(id=0,
+                                firstname,
+                                lastname,
+                                email,password,
+                                null,
+                                trimDailyRequirements.toInt())
+                            )
+                        }
+                        _progressBarLoadingSharedFlow.emit(false)
+
+                        val body = responseRegister?.body()
+
+                        when{
+                            responseRegister == null ->
+                                R.string.no_response_database
+
+                            responseRegister.isSuccessful && body != null -> {
+                                _userCreatedSharedFlow.emit(true)
+                                R.string.user_created
+                            }
+
+                            responseRegister.code() == 409 ->
+                                R.string.email_already_register
+
+                            else -> return@launch
+                        }.let {
+                            _userMessageSharedFlow.emit(it)
+                        }
+                    } catch (ce: ConnectException){
+                        _progressBarLoadingSharedFlow.emit(false)
+                        viewModelScope.launch {
+                            _userMessageSharedFlow.emit(R.string.no_response_database)
+                        }
+                    }
+                }
+            } else
+                viewModelScope.launch {
+                    _userMessageSharedFlow.emit(R.string.password_not_match)
+                }
+        } else
+            viewModelScope.launch {
+                _userMessageSharedFlow.emit(R.string.fill_fields)
+            }
+    }
 }

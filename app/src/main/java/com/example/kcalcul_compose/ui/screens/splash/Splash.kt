@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.kcalcul_compose.ui.navigation.NavigationItem
+import com.example.kcalcul_compose.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Preview(showBackground = true)
@@ -35,16 +35,14 @@ fun SplashContent(){
     }
 }
 @Composable
-fun SplashScreen(navController: NavController){
-    val vm: SplashViewModel = hiltViewModel()
+fun SplashScreen(navController: NavController, vm: SplashViewModel){
     LaunchedEffect(key1 = true) {
         vm.userAlreadyLogSharedFlow.collect{
             if(it)
-                navController.navigate(NavigationItem.Edit.route)
+                navController.navigate(Screen.Edit.route)
             else
-                navController.navigate(NavigationItem.Login.route)
+                navController.navigate(Screen.Login.route)
         }
     }
-
     SplashContent()
 }

@@ -6,6 +6,7 @@ import com.example.kcalcul_compose.network.ApiService
 import com.example.kcalcul_compose.network.MyPrefs
 import com.example.kcalcul_compose.network.dtos.users.LogUserDto
 import com.example.kcalcul_compose.R
+import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val apiService: ApiService,
-    private val myPrefs: MyPrefs
+    private val myPrefs: MyPrefs,
 ): ViewModel() {
 
     private var _userMessageSharedFlow = MutableSharedFlow<Int>()
@@ -36,7 +37,6 @@ class LoginViewModel @Inject constructor(
         if(trimEmail.isNotEmpty() && trimPassword.isNotEmpty()){
             viewModelScope.launch {
                 _progressBarLoadingSharedFlow.emit(true)
-
                 try {
                     val response = withContext(Dispatchers.IO){
                         apiService.logUser(LogUserDto(trimEmail, trimPassword))

@@ -3,57 +3,51 @@ package com.example.kcalcul_compose.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kcalcul_compose.ui.screens.splash.SplashScreen
 import com.example.kcalcul_compose.ui.screens.edit.EditAccountScreen
+import com.example.kcalcul_compose.ui.screens.login.LoginViewModel
 import com.example.kcalcul_compose.ui.screens.login.SignInScreen
 import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
+import com.example.kcalcul_compose.ui.screens.register.RegisterViewModel
+import com.example.kcalcul_compose.ui.screens.splash.SplashViewModel
 
-enum class Screens {
-    HOME,
-    LOGIN,
-    REGISTER,
-    EDIT,
-    CREATE_MEAL,
-    SPLASH,
-}
-sealed class NavigationItem(val route: String) {
-    data object Home : NavigationItem(Screens.HOME.name)
-    data object Login : NavigationItem(Screens.LOGIN.name)
-    data object Register : NavigationItem(Screens.REGISTER.name)
-    data object Edit : NavigationItem(Screens.EDIT.name)
-    data object CreateMeal : NavigationItem(Screens.CREATE_MEAL.name)
-    data object Splash : NavigationItem(Screens.SPLASH.name)
 
+sealed class Screen(val route: String) {
+    data object Home : Screen("home")
+    data object Login : Screen("login")
+    data object Register : Screen("register")
+    data object Edit : Screen("edit")
+    data object CreateMeal : Screen("create_meal")
+    data object Splash : Screen("splash")
 }
 
 @Composable
-fun AppNavHost(
-    modifier: Modifier = Modifier,
-    startDestination: String = NavigationItem.Splash.route
-) {
+fun AppNavHost() {
     val navController =  rememberNavController()
-
     NavHost(
-        modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = Screen.Register.route
     ) {
-        composable(NavigationItem.Splash.route) {
-            SplashScreen(navController)
+        composable(Screen.Splash.route) {
+            val splashViewModel: SplashViewModel = hiltViewModel()
+            SplashScreen(navController, splashViewModel)
         }
-        composable(NavigationItem.Login.route) {
-            SignInScreen()
+        composable(Screen.Login.route) {
+            val loginViewModel: LoginViewModel = hiltViewModel()
+            SignInScreen(navController, loginViewModel)
         }
-        composable(NavigationItem.Register.route) {
-            RegisterScreen()
+        composable(Screen.Register.route) {
+            val registerViewModel: RegisterViewModel = hiltViewModel()
+            RegisterScreen(navController, registerViewModel)
         }
-        composable(NavigationItem.Edit.route) {
+        composable(Screen.Edit.route) {
             EditAccountScreen()
         }
-        composable(NavigationItem.CreateMeal.route) {
+        composable(Screen.CreateMeal.route) {
             EditAccountScreen()
         }
     }

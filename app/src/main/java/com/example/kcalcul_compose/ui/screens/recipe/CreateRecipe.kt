@@ -21,7 +21,10 @@ fun CreateRecipeContent(){
     Column {
         TitleSharedComponent(text = context.getString(R.string.submit_a_meal))
         Text(text = context.getString(R.string.name))
-        EditTextSharedComponent(placeholderStr = "")
+        EditTextSharedComponent(placeholderStr = "",
+            onChangeText = {
+
+            })
         Text(text = context.getString(R.string.ingredient))
 
     }

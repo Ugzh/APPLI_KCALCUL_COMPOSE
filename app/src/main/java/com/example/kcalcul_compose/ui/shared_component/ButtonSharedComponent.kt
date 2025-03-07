@@ -27,6 +27,7 @@ fun ButtonSharedComponentPreview(
 fun ButtonSharedComponent(
     modifier: Modifier = Modifier,
     btnText: String = "Ugo",
+    onClickAction : () -> Unit
 ){
-  Button(onClick = { /*TODO*/ }, content = { Text(text = btnText)}, modifier = modifier)
+  Button(onClick = { onClickAction() }, content = { Text(text = btnText)}, modifier = modifier)
 }

@@ -1,5 +1,6 @@
 package com.example.kcalcul_compose.ui.shared_component
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -48,16 +49,21 @@ fun EditTextSharedComponent(
     placeholderStr: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPasswordField: Boolean = false,
-    textSize: TextUnit = 14.sp
-
+    textSize: TextUnit = 14.sp,
+    onChangeText: (String) -> Unit,
 ){
     var updatedText by remember {
         mutableStateOf(textToEdit)
     }
+
     OutlinedTextField(
         modifier = modifier,
         value = updatedText,
-        onValueChange = { updatedText = it },
+        onValueChange =
+        {
+            updatedText = it
+            onChangeText(it)
+        },
         label = {
             Text(text = placeholderStr, fontSize = textSize)
         },
@@ -69,4 +75,5 @@ fun EditTextSharedComponent(
         visualTransformation =
         if (isPasswordField) PasswordVisualTransformation() else VisualTransformation.None
     )
+
 }

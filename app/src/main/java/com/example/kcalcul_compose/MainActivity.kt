@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
 
                     //RegisterScreen()
                     //EditAccountPreview()
-                    //AppNavHost()
-                    IngredientEditsTextsContent()
+                    AppNavHost()
+                    //IngredientEditsTextsContent()
                 }
             }
         }

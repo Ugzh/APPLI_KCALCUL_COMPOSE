@@ -67,25 +67,7 @@ fun IngredientSharedComponent(ingredient: String, kcal: Int, qty: Int, unit: Str
     }
 }
 
-@Composable
-fun TextViewIngredient(name: String, modifier : Modifier = Modifier){
-    Text(text = name,
-        modifier = modifier
-            .padding(3.dp)
-            .border(
-                width = 1.dp,
-                brush = SolidColor(BorderColor),
-                shape = RoundedCornerShape(4.dp)
-            )
-            .padding(
-                top = 10.dp,
-                bottom = 10.dp,
-                start = 20.dp,
-                end = 20.dp
-            ),
-        maxLines = 1
-    )
-}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -104,38 +86,63 @@ fun IngredientEditsTextsContent(){
             placeholderStr = context.getString(R.string.ingredient),
             modifier = Modifier
                 .weight(0.3f)
-                //.padding(end = 4.dp),
+                .padding(end = 4.dp),
+            onChangeText = {
 
-
+            }
         )
         EditTextSharedComponent(
             placeholderStr = context.getString(R.string.kcal_100g),
             modifier = Modifier
                 .weight(0.3f)
-                .padding(end = 4.dp)
+                .padding(end = 4.dp),
+                onChangeText = {
+
+                }
         )
         EditTextSharedComponent(
             placeholderStr = context.getString(R.string.quantity_shortcut),
             modifier = Modifier
                 .weight(0.2f)
-                .padding(end = 4.dp)
+                .padding(end = 4.dp),
+                onChangeText = {
+
+                }
 
         )
         EditTextSharedComponent(
             placeholderStr = context.getString(R.string.unit),
             modifier = Modifier
                 .weight(0.2f)
-                .padding(end = 4.dp)
+                .padding(end = 4.dp),
+                onChangeText = {
+
+                }
         )
         Icon(
             imageVector = Icons.Outlined.Delete,
             contentDescription = context.getString(R.string.delete),
             modifier = Modifier.weight(0.1f)
         )
-        /*OutlinedTextField(value = "ingredient6", onValueChange ={}, Modifier.weight(0.2f))
-        OutlinedTextField(value = "ingredient2", onValueChange ={},  Modifier.weight(0.2f) )
-        OutlinedTextField(value = "ingredient3", onValueChange ={},  Modifier.weight(0.2f) )
-        OutlinedTextField(value = "ingredient3", onValueChange ={},  Modifier.weight(0.2f) )*/
     }
+}
 
+@Composable
+fun TextViewIngredient(name: String, modifier : Modifier = Modifier){
+    Text(text = name,
+        modifier = modifier
+            .padding(3.dp)
+            .border(
+                width = 1.dp,
+                brush = SolidColor(BorderColor),
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding(
+                top = 10.dp,
+                bottom = 10.dp,
+                start = 20.dp,
+                end = 20.dp
+            ),
+        maxLines = 1
+    )
 }

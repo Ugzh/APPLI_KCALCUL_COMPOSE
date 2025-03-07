@@ -42,17 +42,29 @@ fun EditAccountContent(){
                 .align(Alignment.Center)
                 .padding(horizontal = 60.dp)) {
             EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.firstname)
+                placeholderStr = context.getString(R.string.firstname),
+                onChangeText = {
+
+                }
             )
             EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.lastname)
+                placeholderStr = context.getString(R.string.lastname),
+                onChangeText = {
+
+                }
             )
             EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.email)
+                placeholderStr = context.getString(R.string.email),
+                onChangeText = {
+
+                }
             )
             EditTextSharedComponent(
                 placeholderStr = context.getString(R.string.daily_requirements),
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Number,
+                onChangeText = {
+
+                }
             )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -62,11 +74,13 @@ fun EditAccountContent(){
             ) {
                 ButtonSharedComponent(
                     btnText = context.getString(R.string.back),
-                    modifier = Modifier
+                    modifier = Modifier,
+                    onClickAction = {}
                 )
                 ButtonSharedComponent(
                     btnText = context.getString(R.string.validate),
-                    modifier = Modifier
+                    modifier = Modifier,
+                    onClickAction = {}
                 )
             }
         }

@@ -11,7 +11,6 @@ class MyPrefs @Inject constructor(private val sharedPreferences: SharedPreferenc
         get() = sharedPreferences.getLong(USER_ID, 0L)
         set(value) = sharedPreferences.edit().putLong(USER_ID,value).apply()
 
-
     var token: String?
         get() = sharedPreferences.getString(TOKEN,null)
         set(value) = sharedPreferences.edit().putString(TOKEN, value).apply()
