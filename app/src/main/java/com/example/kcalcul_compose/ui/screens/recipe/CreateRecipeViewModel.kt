@@ -35,8 +35,8 @@ class CreateRecipeViewModel @Inject constructor(
     private var _recipeCreatedSharedFlow = MutableSharedFlow<Boolean>()
     val recipeCreatedSharedFlow = _recipeCreatedSharedFlow.asSharedFlow()
 
-    private var _progressBarLoadingSharedFlow = MutableSharedFlow<Boolean>()
-    val progressBarLoadingSharedFlow = _progressBarLoadingSharedFlow.asSharedFlow()
+    private var _progressBarLoadingStateFlow = MutableStateFlow(false)
+    val progressBarLoadingStateFlow = _progressBarLoadingStateFlow.asStateFlow()
 
 
     private val listOfFoodBeverageDto = mutableListOf<FoodBeverageDto>()
@@ -71,29 +71,31 @@ class CreateRecipeViewModel @Inject constructor(
             _foodBeveragesListStateFlow.value.filter { it.nameIngredient != name }
     }
 
-    fun createRecipe(){
+    fun createRecipe(name: String, dishCategory: String){
+
         _foodBeveragesListStateFlow.value.forEach {
             listOfFoodBeverageDto.add(FoodBeverageDto(it.nameIngredient, it.kcal))
             listOfUnits.add(UnitDto(it.unit))
             listOfQuantity.add(it.quantity)
         }
+
         viewModelScope.launch {
-            _progressBarLoadingSharedFlow.emit(true)
+            _progressBarLoadingStateFlow.value = true
 
             try {
                 val responseEdit = withContext(Dispatchers.IO){
                     apiService.createRecipe(myPrefs.token!!,
                         CreateRecipeDto(
-                            "tests5",
+                            name,
                             "publish",
-                            "main course",
+                            dishCategory.lowercase(),
                             listOfFoodBeverageDto,
                             listOfQuantity,
                             listOfUnits,
                             myPrefs.userId
                         ) )
                 }
-                _progressBarLoadingSharedFlow.emit(false)
+                _progressBarLoadingStateFlow.value = false
 
                 val body = responseEdit?.body()
 
@@ -114,7 +116,7 @@ class CreateRecipeViewModel @Inject constructor(
                      _userMessageSharedFlow.emit(it)
                  }
             } catch (ce: ConnectException){
-                _progressBarLoadingSharedFlow.emit(false)
+                _progressBarLoadingStateFlow.value = false
                 _userMessageSharedFlow.emit(R.string.no_response_database)
             }
         }

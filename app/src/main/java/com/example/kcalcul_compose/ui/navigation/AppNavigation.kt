@@ -12,6 +12,9 @@ import com.example.kcalcul_compose.ui.screens.edit.EditAccountScreen
 import com.example.kcalcul_compose.ui.screens.edit.EditAccountViewModel
 import com.example.kcalcul_compose.ui.screens.login.LoginViewModel
 import com.example.kcalcul_compose.ui.screens.login.SignInScreen
+import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeContent
+import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeScreen
+import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeViewModel
 import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
 import com.example.kcalcul_compose.ui.screens.register.RegisterViewModel
 import com.example.kcalcul_compose.ui.screens.splash.SplashViewModel
@@ -50,6 +53,8 @@ fun AppNavHost() {
             EditAccountScreen(navController, editAccountViewModel)
         }
         composable(Screen.CreateMeal.route) {
+            val createRecipeViewModel: CreateRecipeViewModel = hiltViewModel()
+            CreateRecipeScreen(navController, createRecipeViewModel)
         }
     }
 }

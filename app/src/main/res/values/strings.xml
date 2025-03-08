@@ -29,7 +29,11 @@
     <string name="ingredient">Ingredient</string>
     <string name="quantity_shortcut">Qty</string>
     <string name="delete">Delete</string>
+    <string name="add">Add</string>
     <string name="dish_category">Dish category</string>
+    <string name="starter">Starter</string>
+    <string name="main_course">Main course</string>
+    <string name="dessert">Dessert</string>
     <string name="unit">Unit</string>
     <string name="plus">+</string>
     <string name="name">Name</string>

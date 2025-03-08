@@ -59,10 +59,8 @@ fun EditAccountContent(
     isLoading: Boolean
     ){
     val context = LocalContext.current
-    Log.d("test2",user.firstname + " recompo")
 
     var firstname by remember {
-        Log.d("test2",user.firstname)
         mutableStateOf(user.firstname)
     }
     var lastname by remember {

@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,13 +46,17 @@ fun SignInPreview(){
 
 @Composable
 
-fun SignInContent(logUser: (String, String) -> Unit, noAccountNavigation: () -> Unit, isLoading: Boolean){
+fun SignInContent(
+    logUser: (String, String) -> Unit,
+    noAccountNavigation: () -> Unit,
+    isLoading: Boolean
+){
     val context = LocalContext.current
 
-    var email by remember {
+    var email by rememberSaveable {
         mutableStateOf("")
     }
-    var password by remember {
+    var password by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -118,7 +123,7 @@ fun SignInScreen(navController: NavController, vm: LoginViewModel) {
     LaunchedEffect(key1 = true) {
         vm.userLoggedSharedFlow.collect{
             if(it)
-                navController.navigate(Screen.Edit.route)
+                navController.navigate(Screen.CreateMeal.route)
         }
     }
 
