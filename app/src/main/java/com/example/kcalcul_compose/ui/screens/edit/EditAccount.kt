@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -72,70 +74,79 @@ fun EditAccountContent(
     var dailyRequirements by remember {
         mutableStateOf(user.dailyRequirements.toString())
     }
-    Box(Modifier.fillMaxSize()) {
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)) {
         TitleSharedComponent(
             text = context.getString(R.string.edit_account),
-            modifier = Modifier.align(Alignment.TopCenter)
         )
-        Column(
-            Modifier
-                .align(Alignment.Center)
-                .padding(horizontal = 60.dp)) {
-            EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.firstname),
-                textToEdit = firstname,
-                onChangeText = {
-                    firstname = it
-                }
-            )
-            EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.lastname),
-                textToEdit = lastname,
-                onChangeText = {
-                    lastname = it
-                }
-            )
-            EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.email),
-                textToEdit = email,
-                onChangeText = {
-                    email = it
-                }
-            )
-            EditTextSharedComponent(
-                placeholderStr = context.getString(R.string.daily_requirements),
-                textToEdit = dailyRequirements,
-                keyboardType = KeyboardType.Number,
-                onChangeText = {
-                    dailyRequirements = it
-                }
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .padding(top = 40.dp)
-                    .fillMaxWidth()
-            ) {
-                ButtonSharedComponent(
-                    btnText = context.getString(R.string.back),
-                    modifier = Modifier,
-                    onClickAction = {
-                        backNavigation()
+        Spacer(modifier = Modifier.size(40.dp))
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.firstname),
+            textToEdit = firstname,
+            onChangeText = {
+                firstname = it
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(20.dp))
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.lastname),
+            textToEdit = lastname,
+            onChangeText = {
+                lastname = it
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(20.dp))
 
-                    }
-                )
-                ButtonSharedComponent(
-                    btnText = context.getString(R.string.validate),
-                    modifier = Modifier,
-                    onClickAction = {
-                        updateUser(firstname, lastname, email, dailyRequirements)
-                    }
-                )
-            }
-            Column(Modifier.align(Alignment.CenterHorizontally)) {
-                if(isLoading)
-                    CircularProgressIndicator()
-            }
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.email),
+            textToEdit = email,
+            onChangeText = {
+                email = it
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(20.dp))
+
+        EditTextSharedComponent(
+            placeholderStr = context.getString(R.string.daily_requirements),
+            textToEdit = dailyRequirements,
+            keyboardType = KeyboardType.Number,
+            onChangeText = {
+                dailyRequirements = it
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .fillMaxWidth()
+        ) {
+            ButtonSharedComponent(
+                btnText = context.getString(R.string.back),
+                modifier = Modifier,
+                onClickAction = {
+                    backNavigation()
+
+                }
+            )
+            ButtonSharedComponent(
+                btnText = context.getString(R.string.validate),
+                modifier = Modifier,
+                onClickAction = {
+                    updateUser(firstname, lastname, email, dailyRequirements)
+                }
+            )
+        }
+        Spacer(modifier = Modifier.size(20.dp))
+        Column(Modifier.align(Alignment.CenterHorizontally)) {
+            if(isLoading)
+                CircularProgressIndicator()
         }
     }
 }

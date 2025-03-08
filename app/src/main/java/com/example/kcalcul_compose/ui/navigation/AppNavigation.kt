@@ -85,6 +85,7 @@ fun AppNavHost() {
         BottomBarScreen.Settings.route
     )
     val showBottomBar =  navBackStackEntry?.destination?.route in bottomBarRoutes
+
     Scaffold(
         bottomBar ={
             if(showBottomBar)
