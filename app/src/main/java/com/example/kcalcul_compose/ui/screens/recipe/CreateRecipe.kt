@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.kcalcul_compose.R
+import com.example.kcalcul_compose.ui.shared_component.BottomBarSharedComponentContent
 import com.example.kcalcul_compose.ui.shared_component.ButtonSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.EditTextSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.IngredientEditsTextsContent
@@ -197,4 +198,5 @@ fun CreateRecipeScreen(navController: NavController, vm: CreateRecipeViewModel){
         },
         isLoading
     )
+
 }
