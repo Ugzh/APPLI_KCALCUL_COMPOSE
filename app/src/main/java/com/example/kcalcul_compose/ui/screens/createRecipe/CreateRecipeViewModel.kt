@@ -1,14 +1,14 @@
-package com.example.kcalcul_compose.ui.screens.recipe
+package com.example.kcalcul_compose.ui.screens.createRecipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kcalcul_compose.network.ApiService
 import com.example.kcalcul_compose.network.MyPrefs
-import com.example.kcalcul_compose.network.dtos.foodsBeverages.CreateRecipeDto
+import com.example.kcalcul_compose.network.dtos.recipes.CreateRecipeDto
 import com.example.kcalcul_compose.network.dtos.foodsBeverages.FoodBeverageDto
 import com.example.kcalcul_compose.network.dtos.foodsBeverages.UnitDto
 import com.example.kcalcul_compose.R
-import com.example.kcalcul_compose.utils.FoodBeverage
+import com.example.kcalcul_compose.utils.FoodBeverageCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,8 +26,8 @@ class CreateRecipeViewModel @Inject constructor(
     private val myPrefs: MyPrefs
 ): ViewModel(){
 
-    private var _foodBeveragesListStateFlow = MutableStateFlow<List<FoodBeverage>>(emptyList())
-    val foodBeveragesListStateFlow = _foodBeveragesListStateFlow.asStateFlow()
+    private var _foodBeveragesListStateFlowCustom = MutableStateFlow<List<FoodBeverageCustom>>(emptyList())
+    val foodBeveragesListStateFlow = _foodBeveragesListStateFlowCustom.asStateFlow()
 
     private var _userMessageSharedFlow = MutableSharedFlow<Int>()
     val userMessageSharedFlow = _userMessageSharedFlow.asSharedFlow()
@@ -54,7 +54,7 @@ class CreateRecipeViewModel @Inject constructor(
             && trimUnit.isNotEmpty()
             && trimKcal.isNotEmpty()
         ){
-            _foodBeveragesListStateFlow.value += FoodBeverage(
+            _foodBeveragesListStateFlowCustom.value += FoodBeverageCustom(
                 trimName,
                 trimKcal.toInt(),
                 trimQuantity.toInt(),
@@ -67,13 +67,13 @@ class CreateRecipeViewModel @Inject constructor(
     }
 
     fun removeIngredient(name: String){
-        _foodBeveragesListStateFlow.value =
-            _foodBeveragesListStateFlow.value.filter { it.nameIngredient != name }
+        _foodBeveragesListStateFlowCustom.value =
+            _foodBeveragesListStateFlowCustom.value.filter { it.nameIngredient != name }
     }
 
     fun createRecipe(name: String, dishCategory: String){
 
-        _foodBeveragesListStateFlow.value.forEach {
+        _foodBeveragesListStateFlowCustom.value.forEach {
             listOfFoodBeverageDto.add(FoodBeverageDto(it.nameIngredient, it.kcal))
             listOfUnits.add(UnitDto(it.unit))
             listOfQuantity.add(it.quantity)

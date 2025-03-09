@@ -1,8 +1,9 @@
 package com.example.kcalcul_compose.network
 
-import com.example.kcalcul_compose.network.ApiRoutes
-import com.example.kcalcul_compose.network.dtos.foodsBeverages.CreateRecipeDto
-import com.example.kcalcul_compose.network.dtos.foodsBeverages.CreateRecipeResponseDto
+import com.example.kcalcul_compose.network.dtos.recipes.CreateRecipeDto
+import com.example.kcalcul_compose.network.dtos.recipes.CreateRecipeResponseDto
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.GetAllFoodsBeveragesDto
+import com.example.kcalcul_compose.network.dtos.recipes.GetAllRecipesResponseDto
 import com.example.kcalcul_compose.network.dtos.users.LogUserResponseDto
 import com.example.kcalcul_compose.network.dtos.users.CreateUserDto
 import com.example.kcalcul_compose.network.dtos.users.CreateUserResponseDto
@@ -43,9 +44,19 @@ interface ApiService {
         @Header("Authorization") authorization: String
     ): Response<UpdateUserResponseDto>?
 
-    @POST(ApiRoutes.CREATE_RECIPE)
+    @POST(ApiRoutes.RECIPE)
     suspend fun createRecipe(
         @Header("Authorization") authorization: String,
         @Body recipe: CreateRecipeDto
     ): Response<CreateRecipeResponseDto>?
+
+    @GET(ApiRoutes.GET_FOODS_BEVERAGES)
+    suspend fun getAllFoodBeverages(
+        @Header("Authorization") authorization: String,
+    ): Response<GetAllFoodsBeveragesDto>?
+
+    @GET(ApiRoutes.RECIPE)
+    suspend fun getAllRecipes(
+        @Header("Authorization") authorization: String,
+    ): Response<GetAllRecipesResponseDto>?
 }

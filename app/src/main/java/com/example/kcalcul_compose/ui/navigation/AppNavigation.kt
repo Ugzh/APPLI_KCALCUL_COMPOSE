@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavHostController
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,14 +16,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.kcalcul_compose.ui.screens.createMeal.CreateMealContent
+import com.example.kcalcul_compose.ui.screens.createMeal.CreateMealScreen
+import com.example.kcalcul_compose.ui.screens.createMeal.CreateMealViewModel
+import com.example.kcalcul_compose.ui.screens.createRecipe.CreateRecipeScreen
+import com.example.kcalcul_compose.ui.screens.createRecipe.CreateRecipeViewModel
 import com.example.kcalcul_compose.ui.screens.splash.SplashScreen
 import com.example.kcalcul_compose.ui.screens.edit.EditAccountScreen
 import com.example.kcalcul_compose.ui.screens.edit.EditAccountViewModel
 import com.example.kcalcul_compose.ui.screens.login.LoginViewModel
 import com.example.kcalcul_compose.ui.screens.login.SignInScreen
-import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeContent
-import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeScreen
-import com.example.kcalcul_compose.ui.screens.recipe.CreateRecipeViewModel
 import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
 import com.example.kcalcul_compose.ui.screens.register.RegisterViewModel
 import com.example.kcalcul_compose.ui.screens.splash.SplashViewModel
@@ -38,6 +39,7 @@ sealed class Screen(val route: String) {
     data object Edit : Screen("edit")
     data object CreateMeal : Screen("create_meal")
     data object Splash : Screen("splash")
+    data object CreateRecipe : Screen("create_recipe")
 }
 
 sealed class BottomBarScreen(
@@ -82,7 +84,8 @@ fun AppNavHost() {
         BottomBarScreen.Home.route,
         BottomBarScreen.Meal.route,
         BottomBarScreen.Calendar.route,
-        BottomBarScreen.Settings.route
+        BottomBarScreen.Settings.route,
+        Screen.CreateMeal.route
     )
     val showBottomBar =  navBackStackEntry?.destination?.route in bottomBarRoutes
 
@@ -94,7 +97,7 @@ fun AppNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Login.route,
+            startDestination = Screen.CreateMeal.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Splash.route) {
@@ -113,9 +116,13 @@ fun AppNavHost() {
                 val editAccountViewModel: EditAccountViewModel = hiltViewModel()
                 EditAccountScreen(navController, editAccountViewModel)
             }
-            composable(Screen.CreateMeal.route) {
+            composable(Screen.CreateRecipe.route) {
                 val createRecipeViewModel: CreateRecipeViewModel = hiltViewModel()
                 CreateRecipeScreen(navController, createRecipeViewModel)
+            }
+            composable(Screen.CreateMeal.route) {
+                val createMealViewModel: CreateMealViewModel = hiltViewModel()
+                CreateMealScreen(navController, createMealViewModel)
             }
         }
     }

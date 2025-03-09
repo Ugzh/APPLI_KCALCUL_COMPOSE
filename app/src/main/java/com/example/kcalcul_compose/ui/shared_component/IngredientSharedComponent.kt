@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.rounded.Delete
@@ -38,25 +39,29 @@ import com.example.kcalcul_compose.ui.theme.BorderColor
 @Preview(showBackground = true)
 @Composable
 fun IngredientSharedComponentPreview(){
-    IngredientSharedComponent("test", 10, 5, "kg")
+    IngredientSharedComponent("test", 10, 5, "kg", {s ->})
 }
 
 @Composable
-fun IngredientSharedComponent(ingredient: String, kcal: Int, qty: Int, unit: String){
+fun IngredientSharedComponent(
+    ingredient: String, kcal: Int, qty: Int, unit: String,
+    deleteItem: (String)-> Unit){
+    val context = LocalContext.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        TextViewIngredient(name = ingredient)
-        TextViewIngredient(name = kcal.toString())
-        TextViewIngredient(name = qty.toString())
-        TextViewIngredient(name = unit)
-        Image(
-            painter = painterResource(id = R.drawable.trash),
-            contentDescription = "trash",
-            Modifier
-                .width(20.dp)
-                .height(20.dp)
+        TextViewSharedComponentContent(name = ingredient)
+        TextViewSharedComponentContent(name = kcal.toString())
+        TextViewSharedComponentContent(name = qty.toString())
+        TextViewSharedComponentContent(name = unit)
+        Icon(
+            imageVector = Icons.Default.DeleteOutline,
+            contentDescription = context.getString(R.string.delete),
+            Modifier.clickable {
+                deleteItem(ingredient)
+            }
         )
     }
 }
@@ -139,33 +144,15 @@ fun IngredientEditsTextsContent(addIngredient: (String, String, String, String) 
         Icon(
             imageVector = Icons.Outlined.Add,
             contentDescription = context.getString(R.string.add),
-            modifier = Modifier.weight(0.05f).clickable{
-                addIngredient(ingredient,kcal,qty,unit)
-                ingredient = ""
-                kcal = ""
-                qty = ""
-                unit = ""
-            }
+            modifier = Modifier
+                .weight(0.05f)
+                .clickable {
+                    addIngredient(ingredient, kcal, qty, unit)
+                    ingredient = ""
+                    kcal = ""
+                    qty = ""
+                    unit = ""
+                }
         )
     }
-}
-
-@Composable
-fun TextViewIngredient(name: String, modifier : Modifier = Modifier){
-    Text(text = name,
-        modifier = modifier
-            .padding(3.dp)
-            .border(
-                width = 1.dp,
-                brush = SolidColor(BorderColor),
-                shape = RoundedCornerShape(4.dp)
-            )
-            .padding(
-                top = 10.dp,
-                bottom = 10.dp,
-                start = 20.dp,
-                end = 20.dp
-            ),
-        maxLines = 1
-    )
 }

@@ -1,4 +1,4 @@
-package com.example.kcalcul_compose.ui.screens.recipe
+package com.example.kcalcul_compose.ui.screens.createRecipe
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -12,12 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,13 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.kcalcul_compose.R
-import com.example.kcalcul_compose.ui.shared_component.BottomBarSharedComponentContent
 import com.example.kcalcul_compose.ui.shared_component.ButtonSharedComponent
+import com.example.kcalcul_compose.ui.shared_component.DropDownMenuSharedComponentContent
 import com.example.kcalcul_compose.ui.shared_component.EditTextSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.IngredientEditsTextsContent
 import com.example.kcalcul_compose.ui.shared_component.IngredientSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.TitleSharedComponent
-import com.example.kcalcul_compose.utils.FoodBeverage
+import com.example.kcalcul_compose.utils.FoodBeverageCustom
 
 @Preview(showBackground = true)
 @Composable
@@ -47,35 +42,33 @@ fun CreateRecipePreview(){
 
     CreateRecipeContent(
         listOf(
-            FoodBeverage("poulet", 100, 2, "kg"),
-            FoodBeverage("un plat plutot lo", 100, 2, "kg")
+            FoodBeverageCustom("poulet", 100, 2, "kg"),
+            FoodBeverageCustom("un plat plutot lo", 100, 2, "kg")
         ),
         { s, s2, s3, s4 ->  },
         backNavigation = {},
         createRecipe = {s, i ->  },
-        true
+        true,
+        {s ->}
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateRecipeContent(
-    listOfFoodBeverages: List<FoodBeverage>,
+    listOfFoodBeverageCustoms: List<FoodBeverageCustom>,
     addIngredient: (String, String, String, String) -> Unit,
     backNavigation: () -> Unit,
     createRecipe : (String, Int) -> Unit,
-    isLoading : Boolean
-    ){
+    isLoading : Boolean,
+    deleteItem : (String) -> Unit
+){
     val dishCategories = listOf(R.string.starter, R.string.main_course, R.string.dessert)
     val context = LocalContext.current
     var name by remember {
         mutableStateOf("")
     }
-    var dishCategorySelected by remember {
+    var categorySelected by remember {
         mutableIntStateOf(dishCategories.get(0))
-    }
-    var isExpanded by remember {
-        mutableStateOf(false)
     }
 
     Column(
@@ -95,53 +88,27 @@ fun CreateRecipeContent(
         IngredientEditsTextsContent(addIngredient = addIngredient)
         Spacer(modifier = Modifier.size(20.dp))
         LazyColumn {
-            items(items = listOfFoodBeverages){
+            items(items = listOfFoodBeverageCustoms){
                 Row {
                     IngredientSharedComponent(
                         ingredient = it.nameIngredient,
                         kcal = it.kcal,
                         qty = it.quantity,
-                        unit = it.unit
+                        unit = it.unit,
+                        deleteItem = deleteItem
                     )
                 }
             }
         }
         Spacer(modifier = Modifier.size(20.dp))
-              ExposedDropdownMenuBox(
-            expanded = isExpanded,
-            onExpandedChange = {
-                isExpanded = it
+        DropDownMenuSharedComponentContent(
+            value = context.getString(categorySelected)            ,
+            listOfItemStringId = dishCategories,
+            labelText = context.getString(R.string.dish_category),
+            getItemSelected = {
+                categorySelected = it
             }
-        ){
-            TextField(
-                value = context.getString(dishCategorySelected),
-                onValueChange = {},
-                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)},
-                readOnly = true,
-                label = {
-                    Text(
-                        text = context.getString(R.string.dish_category)
-                    )
-                },
-                modifier = Modifier.menuAnchor()
-            )
-            ExposedDropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = false }
-            ) {
-                dishCategories.forEach{ category ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = context.getString(category))
-                        },
-                        onClick = {
-                            dishCategorySelected = category
-                            isExpanded = false
-                        }
-                    )
-                }
-            }
-        }
+        )
         Spacer(modifier = Modifier.size(40.dp))
         Row(
             modifier = Modifier
@@ -156,7 +123,9 @@ fun CreateRecipeContent(
             )
             ButtonSharedComponent(
                 btnText = context.getString(R.string.submit),
-                onClickAction = { createRecipe(name, dishCategorySelected) }
+                onClickAction = {
+                    createRecipe(name, categorySelected)
+                }
             )
         }
         Spacer(modifier = Modifier.size(40.dp))
@@ -196,7 +165,8 @@ fun CreateRecipeScreen(navController: NavController, vm: CreateRecipeViewModel){
         createRecipe = { name, dishCategory ->
             vm.createRecipe(name, context.getString(dishCategory))
         },
-        isLoading
+        isLoading,
+        deleteItem = { vm.removeIngredient(it) }
     )
 
 }

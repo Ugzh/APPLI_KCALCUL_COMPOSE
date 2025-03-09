@@ -35,7 +35,6 @@ import com.example.kcalcul_compose.R
 import com.example.kcalcul_compose.ui.navigation.Screen
 import com.example.kcalcul_compose.ui.shared_component.ButtonSharedComponent
 import com.example.kcalcul_compose.ui.shared_component.EditTextSharedComponent
-import com.example.kcalcul_compose.ui.shared_component.Lucas
 import com.example.kcalcul_compose.ui.shared_component.TitleSharedComponent
 
 @Preview(showBackground = true)

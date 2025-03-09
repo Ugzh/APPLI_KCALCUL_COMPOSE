@@ -6,5 +6,5 @@ object ApiRoutes {
     const val POST_GET_CREATE_USER ="user"
     const val POST_LOGIN_USER ="user/login"
     const val PATCH_UPDATE_USER ="user/{id}"
-    const val CREATE_RECIPE = "recipe"
+    const val RECIPE = "recipe"
 }

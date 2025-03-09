@@ -59,11 +59,11 @@ class RegisterViewModel @Inject constructor(
                         val responseRegister = withContext(Dispatchers.IO){
                             apiService.createUser(
                                 CreateUserDto(id=0,
-                                firstname,
-                                lastname,
-                                email,password,
-                                null,
-                                trimDailyRequirements.toInt())
+                                    firstname,
+                                    lastname,
+                                    email,password,
+                                    null,
+                                    trimDailyRequirements.toInt())
                             )
                         }
                         _progressBarLoadingStateFlow.value = false

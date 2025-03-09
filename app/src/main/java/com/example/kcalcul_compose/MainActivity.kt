@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.kcalcul_compose.ui.navigation.AppNavHost
+import com.example.kcalcul_compose.ui.screens.createMeal.CreateMealContent
 import com.example.kcalcul_compose.ui.screens.register.RegisterScreen
 import com.example.kcalcul_compose.ui.shared_component.IngredientEditsTextsContent
 import com.example.kcalcul_compose.ui.theme.KCALCUL_COMPOSETheme
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavHost()
+                    //CreateMealContent()
                 }
             }
         }

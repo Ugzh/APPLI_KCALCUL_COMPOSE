@@ -1,4 +1,4 @@
-package com.example.kcalcul_compose.network.dtos.foodsBeverages
+package com.example.kcalcul_compose.network.dtos.recipes
 
 import com.squareup.moshi.Json
 

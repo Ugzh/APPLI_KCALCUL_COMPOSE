@@ -53,6 +53,7 @@ fun EditTextSharedComponent(
     textSize: TextUnit = 14.sp,
     textToEdit: String = "",
     onChangeText: (String) -> Unit,
+    readOnly : Boolean = false
 ){
     OutlinedTextField(
         modifier = modifier,
@@ -65,39 +66,9 @@ fun EditTextSharedComponent(
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType
         ),
+        readOnly = readOnly,
         maxLines = 1,
         visualTransformation =
         if (isPasswordField) PasswordVisualTransformation() else VisualTransformation.None
     )
-}
-
-@Composable
-fun Lucas(
-    value: String,
-    labelText: String,
-    onValueChange: (String) -> Unit,
-){
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = {
-            Text(text = labelText)
-        },
-
-    )
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Test(){
-    var state by remember {
-        mutableStateOf("")
-    }
-    Column {
-        Lucas(labelText = "Lucas", value = state, onValueChange = {state = it})
-        Button(onClick = {Log.d("test", "$state test")}) {
-        }
-    }
-
 }

@@ -1,6 +1,8 @@
-package com.example.kcalcul_compose.network.dtos.foodsBeverages
+package com.example.kcalcul_compose.network.dtos.recipes
 
 
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.FoodBeverageDto
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.UnitDto
 import com.squareup.moshi.Json
 
 data class CreateRecipeDto(
