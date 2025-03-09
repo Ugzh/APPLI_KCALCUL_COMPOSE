@@ -41,7 +41,11 @@
     <string name="dinner">Dinner</string>
     <string name="meal_type">Meal type</string>
     <string name="select_recipe">Select recipe</string>
+    <string name="select_foodBeverage">Select food or beverage</string>
+    <string name="not_find_recipeFood">You don\'t find your food or recipes ? Create here</string>
+    <string name="create_meal">Create my meal</string>
     <string name="food_or_recipe">Enter food or recipe name</string>
+    <string name="create_meal_title">Create a new meal</string>
     <string name="add">Add</string>
     <string name="dish_category">Dish category</string>
     <string name="starter">Starter</string>

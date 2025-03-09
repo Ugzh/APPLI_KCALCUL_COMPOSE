@@ -1,5 +1,7 @@
 package com.example.kcalcul_compose.ui.shared_component
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,52 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kcalcul_compose.R
+import com.example.kcalcul_compose.network.dtos.foodsBeverages.FoodBeverageResponseDto
 import com.example.kcalcul_compose.network.dtos.recipes.RecipeDto
+import com.example.kcalcul_compose.utils.FoodBeverageCustom
 import com.example.kcalcul_compose.utils.RecipeCustom
-
-@Preview(showBackground = true)
-@Composable
-fun MealItemRecipePreview(){
-    //MealItemRecipeContent(emptyList(), RecipeDto(),"", {i ->}, {s ->}, {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MealItemFoodBeveragePreview(){
-    MealItemFoodBeverageContent(
-        emptyList(),
-        "",
-        "",
-        "",
-        {i ->},
-        {s ->},
-        {},
-        {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MealItemRecipeSelectedPreview(){
-    MealItemRecipeSelectedContent(
-        RecipeCustom(
-            RecipeDto(
-                0,
-                "Lasagne",
-                "first",
-                "publish",
-                "",
-                updatedAt = null
-            ),
-            20
-        ),
-        deleteOnClick = {}
-    )
-}
-
 @Composable
 fun MealItemRecipeContent(
     listOfItems: List<RecipeDto>,
@@ -68,7 +33,8 @@ fun MealItemRecipeContent(
     valueQty: String,
     getItemSelected: (Int) -> Unit,
     onChangeText: (String) -> Unit,
-    addOnClick: (RecipeDto, String) -> Unit
+    addOnClick: (RecipeDto, String) -> Unit,
+    clearFieldOnClick: () -> Unit
 ){
     val context = LocalContext.current
     Row (
@@ -97,6 +63,7 @@ fun MealItemRecipeContent(
             contentDescription = context.getString(R.string.add),
             modifier = Modifier.clickable {
                 addOnClick(valueDropDownRecipe, valueQty)
+                clearFieldOnClick()
             }
         )
     }
@@ -104,14 +71,15 @@ fun MealItemRecipeContent(
 
 @Composable
 fun MealItemFoodBeverageContent(
-    listOfItems: List<String>,
-    valueDropDown: String,
+    listOfFoodBeverages: List<FoodBeverageResponseDto>,
+    valueDropDownFood: FoodBeverageResponseDto,
     valueQty: String,
     valueUnit: String,
     getItemSelected: (Int) -> Unit,
     onChangeTextQty: (String) -> Unit,
     onChangeTextUnit: (String) -> Unit,
-    addOnClick: () -> Unit
+    addOnClick: (FoodBeverageResponseDto, String, String) -> Unit,
+    clearFieldOnClick: () -> Unit
 ){
     val context = LocalContext.current
     Row (
@@ -120,8 +88,8 @@ fun MealItemFoodBeverageContent(
         modifier = Modifier.fillMaxWidth()
     ){
         DropDownMenuSharedComponentContent(
-            value = valueDropDown,
-            listOfItems = listOfItems,
+            value = valueDropDownFood.name,
+            listOfFoodBeverages = listOfFoodBeverages,
             getItemSelected = getItemSelected,
             modifier = Modifier.weight(0.5f)
         )
@@ -150,7 +118,8 @@ fun MealItemFoodBeverageContent(
             imageVector = Icons.Default.Add,
             contentDescription = context.getString(R.string.add),
             modifier = Modifier.clickable {
-                addOnClick()
+                addOnClick(valueDropDownFood, valueQty, valueUnit)
+                clearFieldOnClick()
             }
         )
     }
@@ -175,6 +144,32 @@ fun MealItemRecipeSelectedContent(
             contentDescription = context.getString(R.string.add),
             modifier = Modifier.clickable {
                 deleteOnClick(recipeCustom)
+            }
+        )
+    }
+}
+
+@Composable
+fun MealItemFoodSelectedContent(
+    foodBeverage: FoodBeverageCustom,
+    deleteOnClick: (FoodBeverageCustom) -> Unit
+){
+    val context = LocalContext.current
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextViewSharedComponentContent(name = foodBeverage.nameIngredient)
+        Spacer(modifier = Modifier.width(4.dp))
+        TextViewSharedComponentContent(name = foodBeverage.quantity.toString())
+        Spacer(modifier = Modifier.width(4.dp))
+        TextViewSharedComponentContent(name = foodBeverage.unit)
+        Spacer(modifier = Modifier.width(4.dp))
+        Icon(
+            imageVector = Icons.Default.DeleteOutline,
+            contentDescription = context.getString(R.string.add),
+            modifier = Modifier.clickable {
+                deleteOnClick(foodBeverage)
             }
         )
     }

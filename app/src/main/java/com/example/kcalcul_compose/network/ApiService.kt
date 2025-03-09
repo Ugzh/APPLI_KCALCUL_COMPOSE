@@ -3,6 +3,8 @@ package com.example.kcalcul_compose.network
 import com.example.kcalcul_compose.network.dtos.recipes.CreateRecipeDto
 import com.example.kcalcul_compose.network.dtos.recipes.CreateRecipeResponseDto
 import com.example.kcalcul_compose.network.dtos.foodsBeverages.GetAllFoodsBeveragesDto
+import com.example.kcalcul_compose.network.dtos.meal.CreateMealDto
+import com.example.kcalcul_compose.network.dtos.meal.CreateMealResponseDto
 import com.example.kcalcul_compose.network.dtos.recipes.GetAllRecipesResponseDto
 import com.example.kcalcul_compose.network.dtos.users.LogUserResponseDto
 import com.example.kcalcul_compose.network.dtos.users.CreateUserDto
@@ -59,4 +61,10 @@ interface ApiService {
     suspend fun getAllRecipes(
         @Header("Authorization") authorization: String,
     ): Response<GetAllRecipesResponseDto>?
+
+    @POST(ApiRoutes.MEAL)
+    suspend fun createMeal(
+        @Header("Authorization") authorization: String,
+        @Body createMealDto: CreateMealDto
+    ): Response<CreateMealResponseDto>?
 }

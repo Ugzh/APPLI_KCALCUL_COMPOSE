@@ -7,4 +7,5 @@ object ApiRoutes {
     const val POST_LOGIN_USER ="user/login"
     const val PATCH_UPDATE_USER ="user/{id}"
     const val RECIPE = "recipe"
+    const val MEAL = "meal"
 }
